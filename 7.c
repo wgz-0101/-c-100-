@@ -2,141 +2,105 @@
 #include <string.h>
 #include <stdlib.h>
 
-//数组和链表的区别
-
-//链表的定义方式
 struct Node
 {
-    int data;   //数据域
-    struct Node *next;   //指针域
+    int data;
+    struct Node *next;
 };
-
-void print_list(struct Node *head)
-{
-    while (head != NULL)
-    {
-        printf("%d ", head->data);
-        head = head->next;
-    }
-    printf("\n");
-}
-
-void free_list(struct Node *head)
-{
-    while (head != NULL)
-    {
-        struct Node *temp = head;
-        head = head->next;
-        free(temp);
-    }
-}
 
 int main(int argc, char const *argv[])
 {
-    (void)argc;
-    (void)argv;
-
-    struct Node *head = NULL;   //头指针
-    struct Node *p1 = (struct Node *)malloc(sizeof(struct Node));   //创建第一个节点
-    if (p1 == NULL)
-    {
-        return 1;
-    }
-    p1->data = 10;   //给第一个节点赋值
-    p1->next = NULL;   //第一个节点的指针域指向NULL
-    head = p1;   //头指针指向第一个节点
-    struct Node *p2 = (struct Node *)malloc(sizeof(struct Node));   //创建第二个节点
-    if (p2 == NULL)
-    {
-        free_list(head);
-        return 1;
-    }
-    p2->data = 20;   //给第二个节点赋值
-    p2->next = NULL;   //第二个节点的指针域指向NULL
-    p1->next = p2;   //第一个节点的指针域指向第二个节点
-    struct Node *p3 = (struct Node *)malloc(sizeof(struct Node));   //创建第三个节点
-    if (p3 == NULL)
-    {
-        free_list(head);
-        return 1;
-    }
-    p3->data = 30;   //给第三个节点赋值
-    p3->next = NULL;   //第三个节点的指针域指向NULL
-    p2->next = p3;   //第二个节点的指针域指
-    printf("原始链表: ");
-    print_list(head);
-
-    //头插法
-    for (int i = 0; i < 5; i++)
-    {
-        struct Node *p = (struct Node *)malloc(sizeof(struct Node));   //创建新节点
-        if (p == NULL)
-        {
-            free_list(head);
-            return 1;
-        }
-        p->data = i;   //给新节点赋值
-        p->next = head;   //新节点的指针域指向头指针
-        head = p;   //头指针指向新节点
-    }
-    printf("头插法创建的链表: ");
-    print_list(head);
-
-    free_list(head);
-
-    //尾插法
-    head = NULL;   //头指针置空
-    struct Node *tail = NULL;   //尾指针置空
-    for (int i = 0; i < 5; i++)
-    {
-        struct Node *p = (struct Node *)malloc(sizeof(struct Node));   //创建新节点
-        if (p == NULL)
-        {
-            free_list(head);
-            return 1;
-        }
-        p->data = i;   //给新节点赋值
-        p->next = NULL;   //新节点的指针域指向NULL
-        if (head == NULL)   //如果头指针为空
-        {
-            head = p;   //头指针指向新节点
-            tail = p;   //尾指针指向新节点
-        }
-        else
-        {
-            tail->next = p;   //尾指针的指针域指向新节点
-            tail = p;   //尾指针指向新节点
-        }
-    }
-    printf("尾插法创建的链表: ");
-    print_list(head);
-
-    //在中间插入节点
-    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
-    if (newNode == NULL)
-    {
-        free_list(head);
-        return 1;
-    }
-    newNode->data = 25;
-    newNode->next = NULL;
+    struct Node *head = NULL;
+    struct Node *node1 = (struct Node*)malloc(sizeof(struct Node));
+    node1->data = 10;
+    struct Node *node2 = (struct Node*)malloc(sizeof(struct Node));
+    node2->data = 20;
+    struct Node *node3 = (struct Node*)malloc(sizeof(struct Node));
+    node3->data = 30;
+    head = node1;
+    node1->next = node2;
+    node2->next = node3;
+    node3->next = NULL;
     struct Node *current = head;
-    while (current != NULL && current->data != 20)
+    printf("链表节点数据：");
+    while(current != NULL)
     {
+        printf("%d->",current->data);
         current = current->next;
     }
-    if (current != NULL)
+    printf("\n");
+    //头插法
+    struct Node *new_node = (struct Node*)malloc(sizeof(struct Node));
+    new_node->data = 1;
+    new_node->next = head;
+    head = new_node;
+    struct Node *new_node_1 = (struct Node*)malloc(sizeof(struct Node));
+    new_node_1->data = 2;
+    new_node_1->next = head;
+    head = new_node_1;
+    struct Node *current_1 = head;
+    printf("头插法节点数据：");
+    while(current_1 != NULL)
     {
-        newNode->next = current->next;
-        current->next = newNode;
+        printf("%d->",current_1->data);
+        current_1 = current_1->next;
     }
-    else
+    printf("\n");
+    //尾插法
+    struct Node *new_node_2 = (struct Node*)malloc(sizeof(struct Node));
+    new_node_2->data = 100;
+    new_node_2->next = NULL;
+    node3->next = new_node_2;
+    struct Node *new_node_3 = (struct Node*)malloc(sizeof(struct Node));
+    new_node_3->data = 200;
+    new_node_3->next = NULL;
+    new_node_2->next = new_node_3;
+    struct Node *current_2 = head;
+    printf("尾插法节点数据：");
+    while(current_2 != NULL)
     {
-        free(newNode);
+        printf("%d->",current_2->data);
+        current_2 = current_2->next;
     }
-    printf("在中间插入节点后的链表: ");
-    print_list(head);
+    printf("\n");
+    //插入法
+    struct Node *new_node_4 = (struct Node*)malloc(sizeof(struct Node));
+    new_node_4->data = 50;
+    new_node_4->next = node2;
+    node1->next = new_node_4;
+    struct Node *new_node_5 = (struct Node*)malloc(sizeof(struct Node));
+    new_node_5->data = 150;
+    new_node_5->next = node2;
+    new_node_4->next = new_node_5;
+    struct Node *current_3 = head;
+    printf("插入法节点数据：");
+    while(current_3 != NULL)
+    {
+        printf("%d->",current_3->data);
+        current_3 = current_3->next;
+    }
+    printf("\n");
+    //删除法
+    struct Node *temp = node2;
+    new_node_4->next = new_node_5->next;
+    free(temp);
+    struct Node *current_4 = head;
+    printf("删除法节点数据：");
+    while(current_4 != NULL)
+    {
+        printf("%d->",current_4->data);
+        current_4 = current_4->next;
+    }
+    printf("\n");
+    //释放内存
+    struct Node *current_5 = head;
+    while(current_5 != NULL)
+    {
+        struct Node *temp = current_5;
+        current_5 = current_5->next;
+        free(temp);
+    }
+    printf("\n");
 
-    free_list(head);
     return 0;
 }
